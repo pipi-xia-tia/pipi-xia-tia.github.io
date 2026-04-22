@@ -15,7 +15,7 @@
         body {
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #ffe6ef, #f8d8e8);
+            background: linear-gradient(135deg, #ffe6f0, #fdd7e7);
             overflow: hidden;
             font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
             position: relative;
@@ -24,13 +24,13 @@
         /* 顶部标题栏 */
         .header {
             width: 100%;
-            height: 50px;
+            height: 52px;
             background: #ff8fb3;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
+            font-size: 19px;
             letter-spacing: 1px;
             position: fixed;
             top: 0;
@@ -38,62 +38,59 @@
             z-index: 999;
         }
 
-        /* 3D旋转猫咪容器 */
-        .cat-box {
+        /* 中间心形猫咪区域 */
+        .center-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 220px;
-            height: 320px;
-            perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             z-index: 10;
         }
 
-        .cat-3d {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            border-radius: 20px;
+        /* 心形背景 */
+        .heart-cat {
+            width: 240px;
+            height: 240px;
             background: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 50% 50% 20% 50%;
+            transform: rotate(-45deg);
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            padding: 10px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.3);
+            position: relative;
         }
 
-        /* 猫咪表情 */
-        .cat-face {
+        .cat-inside {
+            transform: rotate(45deg);
             font-size: 100px;
-            user-select: none;
-        }
-        .blink {
-            animation: blink 3s infinite;
-        }
-        .smile {
-            animation: smile 0.5s;
         }
 
-        @keyframes blink {
-            0%, 90% { content: "😺"; }
-            95% { content: "😸"; }
-            100% { content: "😺"; }
+        /* 猫咪尾巴 */
+        .tail {
+            width: 80px;
+            height: 20px;
+            margin-top: 15px;
+            transform-origin: left center;
+            animation: tailSwing 2.5s infinite ease-in-out;
+            cursor: pointer;
+            z-index: 11;
         }
 
-        @keyframes smile {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes tailSwing {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+            100% { transform: rotate(0deg); }
         }
 
         /* 提示语 */
         .tip {
-            margin-top: 15px;
+            margin-top: 12px;
             color: #ff6a94;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
             animation: tipJump 1s infinite alternate;
         }
@@ -103,35 +100,57 @@
             to { transform: translateY(-5px); }
         }
 
-        /* 四角落猫爪按钮 */
+        /* 猫爪按钮 */
         .paw-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #ff9bbb;
+            width: 70px;
+            height: 70px;
             border: none;
-            font-size: 24px;
+            background: #ff9bbc;
+            border-radius: 10px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            font-size: 28px;
             position: fixed;
-            box-shadow: 0 5px 15px rgba(255,143,179,0.4);
+            box-shadow: 0 6px 18px rgba(255,143,179,0.4);
             transition: 0.2s;
             z-index: 100;
         }
+
         .paw-btn:active {
-            transform: scale(0.9);
+            transform: scale(0.92);
             background: #ff7a9c;
         }
-        .paw1 { top: 60px; left: 20px; }
-        .paw2 { top: 60px; right: 20px; }
-        .paw3 { bottom: 20px; left: 20px; }
-        .paw4 { bottom: 20px; right: 20px; }
 
-        /* 泡泡背景 */
+        /* 按钮位置 */
+        .p1 { top: 70px; left: 25px; }
+        .p2 { top: 70px; right: 25px; }
+        .p3 { bottom: 25px; left: 25px; }
+        .p4 { bottom: 25px; right: 25px; }
+
+        /* 按钮气泡提示 */
+        .bubble-tip {
+            position: fixed;
+            background: white;
+            color: #ff6a94;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 101;
+            white-space: nowrap;
+        }
+
+        .b1 { top: 115px; left: 100px; }
+        .b2 { top: 115px; right: 100px; }
+        .b3 { bottom: 70px; left: 100px; }
+        .b4 { bottom: 70px; right: 100px; }
+
+        /* 泡泡特效 */
         .bubble {
             position: absolute;
             background: rgba(255,255,255,0.6);
             border-radius: 50%;
             pointer-events: none;
-            animation: floatUp 8s infinite linear;
+            animation: floatUp 7s infinite linear;
         }
 
         @keyframes floatUp {
@@ -153,8 +172,8 @@
             background: white;
             width: 90%;
             margin: 100px auto;
-            padding: 25px;
-            border-radius: 20px;
+            padding: 28px;
+            border-radius: 22px;
             position: relative;
             max-height: 70vh;
             overflow-y: auto;
@@ -162,23 +181,23 @@
         .close {
             position: absolute;
             top: 15px; right: 18px;
-            font-size: 22px;
+            font-size: 24px;
             color: #666;
             background: none;
             border: none;
         }
         .modal-content h2 {
             color: #ff7a9c;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-align: center;
         }
         .modal-content li {
             list-style: none;
             margin: 10px 0;
-            padding-left: 25px;
+            padding-left: 28px;
             position: relative;
             color: #444;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .modal-content li::before {
             content: "🐾";
@@ -194,25 +213,32 @@
 <!-- 顶部标题 -->
 <div class="header">PIPI' 5/1 Holiday Schedule</div>
 
-<!-- 3D旋转猫咪 -->
-<div class="cat-box">
-    <div class="cat-3d" id="cat3d">
-        <div class="cat-face blink" id="catFace">😺</div>
-        <div class="tip">👉 摸摸我 👈</div>
+<!-- 中间心形猫咪 + 尾巴 -->
+<div class="center-container">
+    <div class="heart-cat">
+        <div class="cat-inside" id="catFace">😺</div>
     </div>
+    <div class="tail" id="tail">🐱 tail</div>
+    <div class="tip">👉 摸摸我 👈</div>
 </div>
 
-<!-- 四个角落猫爪按钮 -->
-<button class="paw-btn paw1" onclick="openModal('yi')">👕</button>
-<button class="paw-btn paw2" onclick="openModal('shi')">🍚</button>
-<button class="paw-btn paw3" onclick="openModal('zhu')">🏠</button>
-<button class="paw-btn paw4" onclick="openModal('xing')">🚶</button>
+<!-- 四个猫爪按钮 -->
+<button class="paw-btn p1" onclick="openModal('yi')">👕</button>
+<button class="paw-btn p2" onclick="openModal('shi')">🍚</button>
+<button class="paw-btn p3" onclick="openModal('zhu')">🏠</button>
+<button class="paw-btn p4" onclick="openModal('xing')">🚶</button>
+
+<!-- 按钮气泡提示 -->
+<div class="bubble-tip b1">点击小猫爪</div>
+<div class="bubble-tip b2">点击小猫爪</div>
+<div class="bubble-tip b3">点击小猫爪</div>
+<div class="bubble-tip b4">点击小猫爪</div>
 
 <!-- 弹窗内容 -->
 <div id="yi" class="modal">
     <div class="modal-content">
         <button class="close" onclick="closeModal('yi')">×</button>
-        <h2>👕 本帅哥的穿衣计划</h2>
+        <h2>👕 本帅哥穿衣计划</h2>
         <ul>
             <li>北京出发必须穿碎花小背心，我就是整条街最自恋的猫！</li>
             <li>到家立刻裸奔，在爸妈面前不需要任何形象～</li>
@@ -264,58 +290,38 @@
 </div>
 
 <script>
-    // 3D拖拽旋转
-    const cat = document.getElementById('cat3d');
-    let isDragging = false;
-    let startX = 0;
-    let rotateY = 0;
-
-    cat.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX; });
-    cat.addEventListener('touchstart', (e) => { isDragging = true; startX = e.touches[0].clientX; });
-
-    document.addEventListener('mousemove', (e) => {
-        if(!isDragging) return;
-        const moveX = e.clientX - startX;
-        rotateY += moveX * 0.5;
-        cat.style.transform = `rotateY(${rotateY}deg)`;
-        startX = e.clientX;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-        if(!isDragging) return;
-        const moveX = e.touches[0].clientX - startX;
-        rotateY += moveX * 0.3;
-        cat.style.transform = `rotateY(${rotateY}deg)`;
-        startX = e.touches[0].clientX;
-    });
-
-    document.addEventListener('mouseup', () => isDragging = false);
-    document.addEventListener('touchend', () => isDragging = false);
-
-    // 自动微笑
+    // 猫咪眨眼 + 微笑
     const catFace = document.getElementById('catFace');
     setInterval(() => {
         catFace.textContent = "😸";
-        catFace.classList.add('smile');
         setTimeout(() => {
             catFace.textContent = "😺";
-            catFace.classList.remove('smile');
         }, 500);
     }, 3000);
 
-    // 泡泡特效
+    // 尾巴自动摇摆 + 点击躲开
+    const tail = document.getElementById('tail');
+    tail.addEventListener('click', () => {
+        tail.style.transition = '0.4s';
+        tail.style.transform = 'translateX(40px) rotate(30deg)';
+        setTimeout(() => {
+            tail.style.transform = 'rotate(0deg)';
+        }, 600);
+    });
+
+    // 背景泡泡
     function createBubble() {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble');
-        const size = Math.random() * 30 + 10;
-        bubble.style.width = size + 'px';
-        bubble.style.height = size + 'px';
-        bubble.style.left = Math.random() * 100 + 'vw';
-        bubble.style.animationDuration = Math.random() * 4 + 4 + 's';
-        document.body.appendChild(bubble);
-        setTimeout(() => bubble.remove(), 8000);
+        const b = document.createElement('div');
+        b.classList.add('bubble');
+        const size = Math.random() * 35 + 10;
+        b.style.width = size + 'px';
+        b.style.height = size + 'px';
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDuration = Math.random() * 4 + 4 + 's';
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 7000);
     }
-    setInterval(createBubble, 800);
+    setInterval(createBubble, 700);
 
     // 弹窗
     function openModal(id) {
