@@ -21,7 +21,6 @@
             position: relative;
         }
 
-        /* 顶部标题栏 */
         .header {
             width: 100%;
             height: 52px;
@@ -38,7 +37,6 @@
             z-index: 999;
         }
 
-        /* 中间心形猫咪区域 */
         .center-container {
             position: absolute;
             top: 50%;
@@ -48,28 +46,28 @@
             flex-direction: column;
             align-items: center;
             z-index: 10;
+            perspective: 1000px;
         }
 
-        /* 心形背景 */
-        .heart-cat {
+        /* 完美圆形 + 3D旋转 */
+        .circle-cat {
             width: 240px;
             height: 240px;
             background: white;
-            border-radius: 50% 50% 20% 50%;
-            transform: rotate(-45deg);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 10px 30px rgba(255, 143, 179, 0.3);
             position: relative;
+            transform-style: preserve-3d;
+            cursor: grab;
         }
 
         .cat-inside {
-            transform: rotate(45deg);
             font-size: 100px;
         }
 
-        /* 猫咪尾巴 */
         .tail {
             width: 80px;
             height: 20px;
@@ -88,7 +86,6 @@
             100% { transform: rotate(0deg); }
         }
 
-        /* 提示语 */
         .tip {
             margin-top: 12px;
             color: #ff6a94;
@@ -102,7 +99,7 @@
             to { transform: translateY(-5px); }
         }
 
-        /* 猫爪按钮 - 真正猫爪形状 */
+        /* 猫爪按钮 */
         .paw-btn {
             width: 75px;
             height: 75px;
@@ -127,7 +124,6 @@
         .paw-btn::after {
             width: 28px; height: 28px; top: -8px; right: 8px;
         }
-
         .paw-btn:active {
             transform: scale(0.92);
             background: #ff7a9c;
@@ -137,13 +133,12 @@
             background: #ff7a9c;
         }
 
-        /* 按钮位置 */
         .p1 { top: 70px; left: 25px; }
         .p2 { top: 70px; right: 25px; }
         .p3 { bottom: 25px; left: 25px; }
         .p4 { bottom: 25px; right: 25px; }
 
-        /* 按钮气泡提示 - 改成：点我 */
+        /* 气泡提示：点我 */
         .bubble-tip {
             position: fixed;
             background: white;
@@ -156,7 +151,6 @@
             z-index: 101;
             white-space: nowrap;
         }
-
         .b1 { top: 115px; left: 100px; }
         .b2 { top: 115px; right: 100px; }
         .b3 { bottom: 70px; left: 100px; }
@@ -170,7 +164,6 @@
             pointer-events: none;
             animation: floatUp 7s infinite linear;
         }
-
         @keyframes floatUp {
             0% { transform: translateY(100vh); opacity: 0; }
             10% { opacity: 1; }
@@ -222,7 +215,6 @@
             position: absolute;
             left: 0;
         }
-
     </style>
 </head>
 
@@ -231,9 +223,9 @@
 <!-- 顶部标题 -->
 <div class="header">PIPI' 5/1 Holiday Schedule</div>
 
-<!-- 中间心形猫咪 + 尾巴 -->
+<!-- 中间圆形猫咪 + 可拖动旋转 -->
 <div class="center-container">
-    <div class="heart-cat">
+    <div class="circle-cat" id="cat3d">
         <div class="cat-inside" id="catFace">😺</div>
     </div>
     <div class="tail" id="tail">🐾</div>
@@ -246,7 +238,7 @@
 <button class="paw-btn p3" onclick="openModal('zhu')">🏠</button>
 <button class="paw-btn p4" onclick="openModal('xing')">🚶</button>
 
-<!-- 按钮气泡提示 → 改成：点我 -->
+<!-- 提示气泡 -->
 <div class="bubble-tip b1">点我</div>
 <div class="bubble-tip b2">点我</div>
 <div class="bubble-tip b3">点我</div>
@@ -308,6 +300,36 @@
 </div>
 
 <script>
+    // 3D 拖动旋转（手机/电脑都能用）
+    const cat = document.getElementById('cat3d');
+    let isDragging = false;
+    let startX = 0;
+    let currentRotate = 0;
+
+    // 鼠标拖动
+    cat.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX; });
+    // 手机触摸拖动
+    cat.addEventListener('touchstart', (e) => { isDragging = true; startX = e.touches[0].clientX; });
+
+    document.addEventListener('mousemove', (e) => {
+        if(!isDragging) return;
+        const moveX = e.clientX - startX;
+        currentRotate += moveX * 0.5;
+        cat.style.transform = `rotateY(${currentRotate}deg)`;
+        startX = e.clientX;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if(!isDragging) return;
+        const moveX = e.touches[0].clientX - startX;
+        currentRotate += moveX * 0.5;
+        cat.style.transform = `rotateY(${currentRotate}deg)`;
+        startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('touchend', () => isDragging = false);
+
     // 猫咪眨眼 + 微笑
     const catFace = document.getElementById('catFace');
     setInterval(() => {
@@ -317,7 +339,7 @@
         }, 500);
     }, 3000);
 
-    // 尾巴自动摇摆 + 点击躲开
+    // 尾巴点击躲开
     const tail = document.getElementById('tail');
     tail.addEventListener('click', () => {
         tail.style.transition = '0.4s';
