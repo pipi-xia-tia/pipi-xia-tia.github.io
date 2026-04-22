@@ -2,200 +2,330 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>皮皮的五一天津假期生活计划</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>皮皮五一假期计划</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
-            background-color: #fef5f7;
-            min-height: 100vh;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffe6ef, #f8d8e8);
+            overflow: hidden;
+            font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
             position: relative;
         }
-        /* 四个方向按钮 */
-        .nav-btn {
-            position: fixed;
-            background: #ff7a9c;
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255,122,156,0.2);
-            z-index: 99;
-        }
-        .nav-btn:hover {
-            transform: scale(1.08);
-            transition: 0.2s;
-        }
-        /* 按钮位置：上 下 左 右 */
-        .btn-top { top: 30px; left: 50%; transform: translateX(-50%); }
-        .btn-bottom { bottom: 30px; left: 50%; transform: translateX(-50%); }
-        .btn-left { left: 30px; top: 50%; transform: translateY(-50%); }
-        .btn-right { right: 30px; top: 50%; transform: translateY(-50%); }
 
-        /* 中间照片 + 动态名字 */
-        .center-box {
+        /* 顶部标题栏 */
+        .header {
+            width: 100%;
+            height: 50px;
+            background: #ff8fb3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            letter-spacing: 1px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+        }
+
+        /* 3D旋转猫咪容器 */
+        .cat-box {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
+            width: 220px;
+            height: 320px;
+            perspective: 1000px;
+            z-index: 10;
         }
-        .cat-photo {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            background: #ffd1dc;
+
+        .cat-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 100px;
-            margin-bottom: 15px;
-        }
-        .cat-name {
-            font-size: 38px;
-            font-weight: bold;
-            color: #ff5d88;
-            animation: bounce 1.2s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
+            flex-direction: column;
+            padding: 10px;
         }
 
-        /* 弹窗样式 */
+        /* 猫咪表情 */
+        .cat-face {
+            font-size: 100px;
+            user-select: none;
+        }
+        .blink {
+            animation: blink 3s infinite;
+        }
+        .smile {
+            animation: smile 0.5s;
+        }
+
+        @keyframes blink {
+            0%, 90% { content: "😺"; }
+            95% { content: "😸"; }
+            100% { content: "😺"; }
+        }
+
+        @keyframes smile {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* 提示语 */
+        .tip {
+            margin-top: 15px;
+            color: #ff6a94;
+            font-size: 16px;
+            font-weight: bold;
+            animation: tipJump 1s infinite alternate;
+        }
+
+        @keyframes tipJump {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        /* 四角落猫爪按钮 */
+        .paw-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ff9bbb;
+            border: none;
+            font-size: 24px;
+            position: fixed;
+            box-shadow: 0 5px 15px rgba(255,143,179,0.4);
+            transition: 0.2s;
+            z-index: 100;
+        }
+        .paw-btn:active {
+            transform: scale(0.9);
+            background: #ff7a9c;
+        }
+        .paw1 { top: 60px; left: 20px; }
+        .paw2 { top: 60px; right: 20px; }
+        .paw3 { bottom: 20px; left: 20px; }
+        .paw4 { bottom: 20px; right: 20px; }
+
+        /* 泡泡背景 */
+        .bubble {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp 8s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        /* 弹窗 */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
+            width: 100vw; height: 100vh;
             background: rgba(0,0,0,0.4);
-            z-index: 100;
+            z-index: 9999;
         }
         .modal-content {
             background: white;
             width: 90%;
-            max-width: 550px;
-            margin: 10% auto;
-            padding: 30px;
+            margin: 100px auto;
+            padding: 25px;
             border-radius: 20px;
             position: relative;
+            max-height: 70vh;
+            overflow-y: auto;
         }
         .close {
             position: absolute;
-            right: 20px; top: 15px;
-            font-size: 24px;
-            cursor: pointer;
+            top: 15px; right: 18px;
+            font-size: 22px;
             color: #666;
+            background: none;
+            border: none;
         }
         .modal-content h2 {
             color: #ff7a9c;
             margin-bottom: 15px;
+            text-align: center;
         }
         .modal-content li {
             list-style: none;
             margin: 10px 0;
-            padding-left: 20px;
+            padding-left: 25px;
             position: relative;
+            color: #444;
+            line-height: 1.5;
         }
         .modal-content li::before {
             content: "🐾";
             position: absolute;
             left: 0;
         }
+
     </style>
 </head>
+
 <body>
 
-<!-- 四个按钮：上下左右 = 食、行、衣、住 -->
-<button class="nav-btn btn-top" onclick="openModal('food')">🍚 食（点击查看）</button>
-<button class="nav-btn btn-bottom" onclick="openModal('walk')">🚶 行（点击查看）</button>
-<button class="nav-btn btn-left" onclick="openModal('cloth')">👕 衣（点击查看）</button>
-<button class="nav-btn btn-right" onclick="openModal('live')">🏠 住（点击查看）</button>
+<!-- 顶部标题 -->
+<div class="header">PIPI' 5/1 Holiday Schedule</div>
 
-<!-- 中间照片 + 名字 -->
-<div class="center-box">
-    <div class="cat-photo">🐱</div>
-    <div class="cat-name">皮皮</div>
+<!-- 3D旋转猫咪 -->
+<div class="cat-box">
+    <div class="cat-3d" id="cat3d">
+        <div class="cat-face blink" id="catFace">😺</div>
+        <div class="tip">👉 摸摸我 👈</div>
+    </div>
 </div>
 
-<!-- 衣 -->
-<div id="cloth" class="modal">
+<!-- 四个角落猫爪按钮 -->
+<button class="paw-btn paw1" onclick="openModal('yi')">👕</button>
+<button class="paw-btn paw2" onclick="openModal('shi')">🍚</button>
+<button class="paw-btn paw3" onclick="openModal('zhu')">🏠</button>
+<button class="paw-btn paw4" onclick="openModal('xing')">🚶</button>
+
+<!-- 弹窗内容 -->
+<div id="yi" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('cloth')">×</span>
-        <h2>👕 衣：舒适随性</h2>
+        <button class="close" onclick="closeModal('yi')">×</button>
+        <h2>👕 本帅哥的穿衣计划</h2>
         <ul>
-            <li>出发穿小碎花背心，从北京美到天津</li>
-            <li>到家立刻裸奔，怎么舒服怎么来</li>
-            <li>被强行穿衣就偷偷脱掉藏沙发底</li>
-            <li>和奶油打架前先整理毛发，颜值不能输</li>
+            <li>北京出发必须穿碎花小背心，我就是整条街最自恋的猫！</li>
+            <li>到家立刻裸奔，在爸妈面前不需要任何形象～</li>
+            <li>敢强行给我穿衣服？我会暴躁藏衣服，主打一个叛逆！</li>
+            <li>和奶油打架前必须梳毛，颜值碾压，输了我当场抽风！</li>
         </ul>
     </div>
 </div>
 
-<!-- 食 -->
-<div id="food" class="modal">
+<div id="shi" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('food')">×</span>
-        <h2>🍚 食：干饭+偷吃</h2>
+        <button class="close" onclick="closeModal('shi')">×</button>
+        <h2>🍚 干饭+偷吃计划</h2>
         <ul>
-            <li>早餐：猫条+猫粮，优雅防抢</li>
-            <li>午餐：偷吃肉和小鱼干</li>
-            <li>下午茶：偷偷吃奶油狗粮</li>
-            <li>晚餐：罐头加餐</li>
-            <li>睡前：再偷一口狗粮完美收官</li>
+            <li>早餐优雅吃猫条，其实是怕笨狗奶油抢！</li>
+            <li>红烧肉、小鱼干必须偷，被抓到就假装无辜，我超会演！</li>
+            <li>偷偷吃狗粮是我的人生乐趣，不被发现算我牛！</li>
+            <li>心情不好就绝食，心情好就狂炫，我就是抽风本猫！</li>
+            <li>睡前必须再偷一口狗粮，完美结束自恋的一天！</li>
         </ul>
     </div>
 </div>
 
-<!-- 住 -->
-<div id="live" class="modal">
+<div id="zhu" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('live')">×</span>
-        <h2>🏠 住：霸占全场</h2>
+        <button class="close" onclick="closeModal('zhu')">×</button>
+        <h2>🏠 霸占床位计划</h2>
         <ul>
-            <li>首选：爸妈大床中间C位</li>
-            <li>备选：沙发底下秘密基地</li>
-            <li>临时：阳台花盆晒太阳</li>
-            <li>禁止奶油抢床位</li>
+            <li>爸妈大床中间C位必须是我，谁也抢不走，暴躁守护！</li>
+            <li>沙发底是我的秘密基地，安全感爆棚，还能监视奶油！</li>
+            <li>阳台晒太阳顺便扒花盆，我就是家里的小恶魔～</li>
+            <li>奶油敢靠近我的床？直接哈气，我才是唯一的小宝贝！</li>
         </ul>
     </div>
 </div>
 
-<!-- 行 -->
-<div id="walk" class="modal">
+<div id="xing" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('walk')">×</span>
-        <h2>🚶 行：家里探险</h2>
+        <button class="close" onclick="closeModal('xing')">×</button>
+        <h2>🚶 家里探险计划</h2>
         <ul>
-            <li>5.1 北京→天津，乖乖猫包不吵闹</li>
-            <li>厨房角落寻宝找零食</li>
-            <li>阳台吓唬小鸟，履行守护者职责</li>
-            <li>沙发底偷袭奶油、睡大觉</li>
-            <li>客厅阳台假装散步骗零食</li>
+            <li>5.1北京去天津，猫包里假装乖巧，其实怕晕车怕到抽风！</li>
+            <li>厨房寻宝，偷零食、扒垃圾桶，被抓就卖萌！</li>
+            <li>阳台守护大业，吓唬小鸟，我是最帅的自恋守护者！</li>
+            <li>沙发底偷袭奶油，打不过就跑，主打一个灵活！</li>
+            <li>客厅散步骗零食，温顺只是我的伪装～</li>
         </ul>
     </div>
 </div>
 
 <script>
+    // 3D拖拽旋转
+    const cat = document.getElementById('cat3d');
+    let isDragging = false;
+    let startX = 0;
+    let rotateY = 0;
+
+    cat.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX; });
+    cat.addEventListener('touchstart', (e) => { isDragging = true; startX = e.touches[0].clientX; });
+
+    document.addEventListener('mousemove', (e) => {
+        if(!isDragging) return;
+        const moveX = e.clientX - startX;
+        rotateY += moveX * 0.5;
+        cat.style.transform = `rotateY(${rotateY}deg)`;
+        startX = e.clientX;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if(!isDragging) return;
+        const moveX = e.touches[0].clientX - startX;
+        rotateY += moveX * 0.3;
+        cat.style.transform = `rotateY(${rotateY}deg)`;
+        startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('touchend', () => isDragging = false);
+
+    // 自动微笑
+    const catFace = document.getElementById('catFace');
+    setInterval(() => {
+        catFace.textContent = "😸";
+        catFace.classList.add('smile');
+        setTimeout(() => {
+            catFace.textContent = "😺";
+            catFace.classList.remove('smile');
+        }, 500);
+    }, 3000);
+
+    // 泡泡特效
+    function createBubble() {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        const size = Math.random() * 30 + 10;
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = Math.random() * 100 + 'vw';
+        bubble.style.animationDuration = Math.random() * 4 + 4 + 's';
+        document.body.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 8000);
+    }
+    setInterval(createBubble, 800);
+
+    // 弹窗
     function openModal(id) {
-        document.getElementById(id).style.display = "block";
+        document.getElementById(id).style.display = 'block';
     }
     function closeModal(id) {
-        document.getElementById(id).style.display = "none";
+        document.getElementById(id).style.display = 'none';
     }
-    // 点击空白关闭
-    window.onclick = function(event) {
-        let modals = document.getElementsByClassName("modal");
-        for(let i=0; i<modals.length; i++){
-            if(event.target == modals[i]) modals[i].style.display = "none";
-        }
+    window.onclick = (e) => {
+        if(e.target.classList.contains('modal')) e.target.style.display = 'none';
     }
 </script>
 
