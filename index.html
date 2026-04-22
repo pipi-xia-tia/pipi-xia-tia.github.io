@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮皮的五一天津假期生活计划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #fef5f7;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* 四个方向按钮 */
+        .nav-btn {
+            position: fixed;
+            background: #ff7a9c;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255,122,156,0.2);
+            z-index: 99;
+        }
+        .nav-btn:hover {
+            transform: scale(1.08);
+            transition: 0.2s;
+        }
+        /* 按钮位置：上 下 左 右 */
+        .btn-top { top: 30px; left: 50%; transform: translateX(-50%); }
+        .btn-bottom { bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .btn-left { left: 30px; top: 50%; transform: translateY(-50%); }
+        .btn-right { right: 30px; top: 50%; transform: translateY(-50%); }
+
+        /* 中间照片 + 动态名字 */
+        .center-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .cat-photo {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: #ffd1dc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            margin-bottom: 15px;
+        }
+        .cat-name {
+            font-size: 38px;
+            font-weight: bold;
+            color: #ff5d88;
+            animation: bounce 1.2s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 100;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 550px;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 20px; top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        .modal-content h2 {
+            color: #ff7a9c;
+            margin-bottom: 15px;
+        }
+        .modal-content li {
+            list-style: none;
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .modal-content li::before {
+            content: "🐾";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 四个按钮：上下左右 = 食、行、衣、住 -->
+<button class="nav-btn btn-top" onclick="openModal('food')">🍚 食（点击查看）</button>
+<button class="nav-btn btn-bottom" onclick="openModal('walk')">🚶 行（点击查看）</button>
+<button class="nav-btn btn-left" onclick="openModal('cloth')">👕 衣（点击查看）</button>
+<button class="nav-btn btn-right" onclick="openModal('live')">🏠 住（点击查看）</button>
+
+<!-- 中间照片 + 名字 -->
+<div class="center-box">
+    <div class="cat-photo">🐱</div>
+    <div class="cat-name">皮皮</div>
+</div>
+
+<!-- 衣 -->
+<div id="cloth" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('cloth')">×</span>
+        <h2>👕 衣：舒适随性</h2>
+        <ul>
+            <li>出发穿小碎花背心，从北京美到天津</li>
+            <li>到家立刻裸奔，怎么舒服怎么来</li>
+            <li>被强行穿衣就偷偷脱掉藏沙发底</li>
+            <li>和奶油打架前先整理毛发，颜值不能输</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 食 -->
+<div id="food" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('food')">×</span>
+        <h2>🍚 食：干饭+偷吃</h2>
+        <ul>
+            <li>早餐：猫条+猫粮，优雅防抢</li>
+            <li>午餐：偷吃肉和小鱼干</li>
+            <li>下午茶：偷偷吃奶油狗粮</li>
+            <li>晚餐：罐头加餐</li>
+            <li>睡前：再偷一口狗粮完美收官</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 住 -->
+<div id="live" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('live')">×</span>
+        <h2>🏠 住：霸占全场</h2>
+        <ul>
+            <li>首选：爸妈大床中间C位</li>
+            <li>备选：沙发底下秘密基地</li>
+            <li>临时：阳台花盆晒太阳</li>
+            <li>禁止奶油抢床位</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 行 -->
+<div id="walk" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('walk')">×</span>
+        <h2>🚶 行：家里探险</h2>
+        <ul>
+            <li>5.1 北京→天津，乖乖猫包不吵闹</li>
+            <li>厨房角落寻宝找零食</li>
+            <li>阳台吓唬小鸟，履行守护者职责</li>
+            <li>沙发底偷袭奶油、睡大觉</li>
+            <li>客厅阳台假装散步骗零食</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+    }
+    // 点击空白关闭
+    window.onclick = function(event) {
+        let modals = document.getElementsByClassName("modal");
+        for(let i=0; i<modals.length; i++){
+            if(event.target == modals[i]) modals[i].style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
