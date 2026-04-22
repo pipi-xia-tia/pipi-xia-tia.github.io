@@ -78,6 +78,8 @@
             animation: tailSwing 2.5s infinite ease-in-out;
             cursor: pointer;
             z-index: 11;
+            color: #ff7a9c;
+            font-size: 22px;
         }
 
         @keyframes tailSwing {
@@ -100,23 +102,38 @@
             to { transform: translateY(-5px); }
         }
 
-        /* 猫爪按钮 */
+        /* 猫爪按钮 - 真正猫爪形状 */
         .paw-btn {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             border: none;
             background: #ff9bbc;
-            border-radius: 10px;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            font-size: 28px;
+            border-radius: 50%;
             position: fixed;
             box-shadow: 0 6px 18px rgba(255,143,179,0.4);
             transition: 0.2s;
             z-index: 100;
         }
+        .paw-btn::before,
+        .paw-btn::after {
+            content: "";
+            position: absolute;
+            background: #ff9bbc;
+            border-radius: 50%;
+        }
+        .paw-btn::before {
+            width: 28px; height: 28px; top: -8px; left: 8px;
+        }
+        .paw-btn::after {
+            width: 28px; height: 28px; top: -8px; right: 8px;
+        }
 
         .paw-btn:active {
             transform: scale(0.92);
+            background: #ff7a9c;
+        }
+        .paw-btn:active::before,
+        .paw-btn:active::after {
             background: #ff7a9c;
         }
 
@@ -126,14 +143,15 @@
         .p3 { bottom: 25px; left: 25px; }
         .p4 { bottom: 25px; right: 25px; }
 
-        /* 按钮气泡提示 */
+        /* 按钮气泡提示 - 改成：点我 */
         .bubble-tip {
             position: fixed;
             background: white;
             color: #ff6a94;
             padding: 6px 10px;
             border-radius: 15px;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: bold;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 101;
             white-space: nowrap;
@@ -218,7 +236,7 @@
     <div class="heart-cat">
         <div class="cat-inside" id="catFace">😺</div>
     </div>
-    <div class="tail" id="tail">🐱 tail</div>
+    <div class="tail" id="tail">🐾</div>
     <div class="tip">👉 摸摸我 👈</div>
 </div>
 
@@ -228,11 +246,11 @@
 <button class="paw-btn p3" onclick="openModal('zhu')">🏠</button>
 <button class="paw-btn p4" onclick="openModal('xing')">🚶</button>
 
-<!-- 按钮气泡提示 -->
-<div class="bubble-tip b1">点击小猫爪</div>
-<div class="bubble-tip b2">点击小猫爪</div>
-<div class="bubble-tip b3">点击小猫爪</div>
-<div class="bubble-tip b4">点击小猫爪</div>
+<!-- 按钮气泡提示 → 改成：点我 -->
+<div class="bubble-tip b1">点我</div>
+<div class="bubble-tip b2">点我</div>
+<div class="bubble-tip b3">点我</div>
+<div class="bubble-tip b4">点我</div>
 
 <!-- 弹窗内容 -->
 <div id="yi" class="modal">
